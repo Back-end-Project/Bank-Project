@@ -49,6 +49,7 @@ public class AuthenticationService {
         user.setLastName(request.getLastName());
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+      
         if(request.getRole() == null) {
             user.setRole(Role.valueOf("USER"));
         }else{

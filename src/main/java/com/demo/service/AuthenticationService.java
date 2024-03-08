@@ -1,6 +1,7 @@
 package com.demo.service;
 
 import com.demo.Entities.AuthenticationResponse;
+import com.demo.Entities.Role;
 import com.demo.Entities.Token;
 import com.demo.Entities.User;
 import com.demo.repository.TokenRepository;
@@ -48,9 +49,11 @@ public class AuthenticationService {
         user.setLastName(request.getLastName());
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-
-        user.setRole(request.getRole());
+        if(request.getRole() == null) {
+            user.setRole(Role.valueOf("USER"));
+        }else{
+            user.setRole(request.getRole());
+        }
 
         user = repository.save(user);
 

@@ -1,5 +1,6 @@
 package com.demo.entities;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -10,6 +11,7 @@ import lombok.Data;
 
 import java.util.List;
 
+@Entity
 @Table(name = "BANK_TRANSACTIONS")
 @Data
 public class Transaction {
@@ -29,7 +31,7 @@ public class Transaction {
     @JoinColumn(name = "account_id")
     private Account accountID;
 
-    private List<Transfer> transferHistory;
+//    private List<Transfer> transferHistory;
 
     /**
      * TO BE ADDED:

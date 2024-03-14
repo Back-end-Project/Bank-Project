@@ -1,5 +1,6 @@
 package com.demo.entities;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -10,7 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
+@Entity
 @Table(name = "BANK_ACCOUNTS")
 @Data
 @NoArgsConstructor
@@ -19,14 +20,14 @@ public class Account {
     @GeneratedValue
     private Long id;
 
-    @GeneratedValue
-    private Long accountNumber;
+    private String accountNumber;
 
     private Double availableBalance;
+
+//    private List<Transaction> transactionHistory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User owner;
 
-    private List<Transaction> transactionHistory;
 }

@@ -1,6 +1,6 @@
 package com.demo.config;
 
-import com.demo.Entities.Token;
+import com.demo.entities.Token;
 import com.demo.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

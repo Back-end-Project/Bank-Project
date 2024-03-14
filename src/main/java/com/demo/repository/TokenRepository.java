@@ -1,6 +1,6 @@
 package com.demo.repository;
 
-import com.demo.Entities.Token;
+import com.demo.entities.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

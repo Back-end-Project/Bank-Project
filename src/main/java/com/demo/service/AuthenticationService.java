@@ -1,9 +1,9 @@
 package com.demo.service;
 
-import com.demo.Entities.AuthenticationResponse;
-import com.demo.Entities.Role;
-import com.demo.Entities.Token;
-import com.demo.Entities.User;
+import com.demo.entities.AuthenticationResponse;
+import com.demo.entities.Role;
+import com.demo.entities.Token;
+import com.demo.entities.User;
 import com.demo.repository.TokenRepository;
 import com.demo.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AuthenticationService {

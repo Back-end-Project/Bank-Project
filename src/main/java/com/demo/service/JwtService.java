@@ -1,6 +1,6 @@
 package com.demo.service;
 
-import com.demo.Entities.User;
+import com.demo.entities.User;
 import com.demo.repository.TokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

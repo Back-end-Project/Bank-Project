@@ -1,4 +1,4 @@
-package com.demo.Entities;
+package com.demo.entities;
 
 public enum Role {
     ADMIN, USER

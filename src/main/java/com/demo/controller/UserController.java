@@ -19,7 +19,7 @@ public class UserController {
     }
 
     @GetMapping("/user_account")
-    public ResponseEntity<List<Account>> demo(Principal principal) {
+    public ResponseEntity<List<Account>> userAccounts(Principal principal) {
         String username = principal.getName();
         List<Account> response = accountService.viewAllAccountsForUser(username);
         return new ResponseEntity<>(response, HttpStatus.OK);

@@ -21,6 +21,12 @@ public class AccountService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Method to create a new account
+     * @param account - the Request (could be null)
+     * @param username - the uniq username of the user
+     * @return - the newly created account
+     */
     public Account createNewAccount(Account account, String username){
         User owner = userRepository.findByUsername(username).orElseThrow(()->new RuntimeException("User not found:("));
         account.setOwner(owner);
@@ -42,9 +48,13 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
+    /**
+     * Based on whoever is registered, the user will see only his accounts
+     * @param username - the uniq username of the user
+     * @return - a list of accounts that belong to the user
+     */
     public List<Account> viewAllAccountsForUser(String username){
         User owner = userRepository.findByUsername(username).orElseThrow(()->new RuntimeException("User not found:("));
-//        return accountRepository.findByOwner(owner).orElseThrow(()->new RuntimeException("Account not found:("));
         List<Account> accounts = accountRepository.findAllByOwner(owner);
         return accounts;
     }

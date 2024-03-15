@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.demo.repository.UserRepository;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -39,6 +40,13 @@ public class AccountService {
 //        account.setTransactionHistory(null);
 
         return accountRepository.save(account);
+    }
+
+    public List<Account> viewAllAccountsForUser(String username){
+        User owner = userRepository.findByUsername(username).orElseThrow(()->new RuntimeException("User not found:("));
+//        return accountRepository.findByOwner(owner).orElseThrow(()->new RuntimeException("Account not found:("));
+        List<Account> accounts = accountRepository.findAllByOwner(owner);
+        return accounts;
     }
 
 

@@ -46,6 +46,7 @@ public class SecurityConfig {
                         req->req.requestMatchers("/login/**","/register/**")
                                 .permitAll()
                                 .requestMatchers("/admin_only/**").hasAuthority("ADMIN")
+                                .requestMatchers("/user_account/**").hasAuthority("USER")
                                 .requestMatchers("/account/**").hasAuthority("USER")
                                 .anyRequest()
                                 .authenticated()

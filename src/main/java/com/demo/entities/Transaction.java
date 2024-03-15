@@ -5,6 +5,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -25,11 +26,10 @@ public class Transaction {
 
     /**
      * TO BE decided:
-     * If this is the wright approach for the accountID
+     * If this is the right approach for the accountID
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id")
-    private Account accountID;
+    @ManyToMany(mappedBy = "transactionHistory", fetch = FetchType.LAZY)
+    private List<Account> accountID;
 
 //    private List<Transfer> transferHistory;
 

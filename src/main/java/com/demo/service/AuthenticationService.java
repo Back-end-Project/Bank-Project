@@ -49,6 +49,8 @@ public class AuthenticationService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setUsername(request.getUsername());
+        user.setAddress(request.getAddress());
+        user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
       
         if(request.getRole() == null) {
@@ -98,11 +100,11 @@ public class AuthenticationService {
 //
 //        tokenRepository.saveAll(validTokens);
 //    }
-    private void saveUserToken(String jwt, User user) {
-        Token token = new Token();
-        token.setToken(jwt);
-        token.setLoggedOut(false);
-        token.setUser(user);
-        tokenRepository.save(token);
-    }
+//    private void saveUserToken(String jwt, User user) {
+//        Token token = new Token();
+//        token.setToken(jwt);
+//        token.setLoggedOut(false);
+//        token.setUser(user);
+//        tokenRepository.save(token);
+//    }
 }

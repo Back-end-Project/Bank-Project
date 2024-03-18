@@ -26,13 +26,13 @@ public class Account {
 
     private Double availableBalance;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "ACCOUNT_TRANSACTION",
-            joinColumns = @JoinColumn(name = "account_id"),
-            inverseJoinColumns = @JoinColumn(name = "transaction_id")
-    )
-    private List<Transaction> transactionHistory;
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "ACCOUNT_TRANSACTION",
+//            joinColumns = @JoinColumn(name = "account_id"),
+//            inverseJoinColumns = @JoinColumn(name = "transaction_id")
+//    )
+//    private List<Transaction> transactionHistory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

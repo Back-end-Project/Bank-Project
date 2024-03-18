@@ -28,8 +28,8 @@ public class Transaction {
      * TO BE decided:
      * If this is the right approach for the accountID
      */
-    @ManyToMany(mappedBy = "transactionHistory", fetch = FetchType.LAZY)
-    private List<Account> accountID;
+//    @ManyToMany(mappedBy = "transactionHistory", fetch = FetchType.LAZY)
+//    private List<Account> accountID;
 
 //    private List<Transfer> transferHistory;
 

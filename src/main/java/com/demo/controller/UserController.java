@@ -1,6 +1,7 @@
 package com.demo.controller;
 import com.demo.entities.Account;
 import com.demo.service.AccountService;
+import org.hibernate.boot.model.source.spi.IdentifierSourceAggregatedComposite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,17 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
+    /**
+     * This is the admin endpoint
+     * The admin will see ALL the accounts
+     * The sensitive data on the accounts will be hashed
+     * Hashed account number - only last 4 digits will be visible - the others will be shown as ****
+     * @return - A list of all the accounts
+     */
     @GetMapping("/admin_only")
-    public ResponseEntity<String> adminOnly() {
-        return ResponseEntity.ok("Hello from admin only url");
+    public ResponseEntity<List<Account>> adminOnly() {
+        List<Account> response = accountService.adminView();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

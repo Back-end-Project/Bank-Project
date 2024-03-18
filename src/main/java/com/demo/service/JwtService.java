@@ -6,6 +6,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -56,12 +57,27 @@ public class JwtService {
     }
 
 
-    public String generateToken(User user) {
-        String token = Jwts
-                .builder()
-                .subject(user.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 24*60*60*1000 ))
+//    public String generateToken(User user) {
+//        String token = Jwts
+//                .builder()
+//                .subject(user.getUsername())
+//                .issuedAt(new Date(System.currentTimeMillis()))
+//                .expiration(new Date(System.currentTimeMillis() + 24*60*60*1000 ))
+//                .signWith(getSigninKey())
+//                .compact();
+//
+//        return token;
+//    }
+
+    public String generateToken(Authentication auth){
+        String username = auth.getName();
+        Date currentDate = new Date();
+        Date expiryDate = new Date(currentDate.getTime() + 24*60*60*1000);
+
+        String token = Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
                 .signWith(getSigninKey())
                 .compact();
 

@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 import com.demo.repository.UserRepository;
 
 import java.util.List;
+import com.demo.entities.User;
+import com.demo.repository.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.demo.repository.UserRepository;
 import java.util.Random;
 
 @Service
@@ -37,6 +42,15 @@ public class AccountService {
      */
     public Account createNewAccount(Account account, String username) {
         User owner = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found:("));
+
+    @Autowired
+    public AccountService(AccountRepository accountRepository, UserRepository userRepository){
+        this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
+    }
+
+    public Account createNewAccount(Account account, String username){
+        User owner = userRepository.findByUsername(username).orElseThrow(()->new RuntimeException("User not found:("));
         account.setOwner(owner);
 
         double accountBalance = getAccountBalance(account);
@@ -48,6 +62,10 @@ public class AccountService {
             String newAccountNumber = generateAccountNumber();
             account.setAccountNumber(newAccountNumber);
         } else {
+        if(accountRepository.findByAccountNumber(accountNumber).isPresent()){
+            String newAccountNumber = generateAccountNumber();
+            account.setAccountNumber(newAccountNumber);
+        } else{
             account.setAccountNumber(accountNumber);
         }
 
@@ -55,7 +73,6 @@ public class AccountService {
 
         return accountRepository.save(account);
     }
-
     /**
      * Based on whoever is registered, the user will see only his accounts
      *
@@ -176,6 +193,11 @@ public class AccountService {
      * Helper method to generate an unique account number
      */
     public String generateAccountNumber() {
+
+    /**
+     *  Helper method to generate an unique account number
+     */
+    public String generateAccountNumber(){
         Random random = new Random();
         StringBuilder builder = new StringBuilder();
 
@@ -188,12 +210,16 @@ public class AccountService {
         return builder.toString();
     }
 
-
     /**
      * Helper method to get/set the Account balance
      */
     public double getAccountBalance(Account account) {
         if (account.getAvailableBalance() != null) {
+    /**
+     * Helper method to get/set the Account balance
+     */
+    public double getAccountBalance(Account account){
+        if(account.getAvailableBalance() != null){
             return account.getAvailableBalance();
         } else {
             return 0.0;

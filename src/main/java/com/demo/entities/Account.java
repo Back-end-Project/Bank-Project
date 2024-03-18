@@ -32,6 +32,7 @@ public class Account {
 //            joinColumns = @JoinColumn(name = "account_id"),
 //            inverseJoinColumns = @JoinColumn(name = "transaction_id")
 //    )
+
 //    private List<Transaction> transactionHistory;
 
     @ManyToOne(fetch = FetchType.LAZY)

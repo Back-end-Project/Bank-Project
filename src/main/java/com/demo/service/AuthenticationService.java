@@ -6,6 +6,8 @@ import com.demo.entities.Token;
 import com.demo.entities.User;
 import com.demo.repository.TokenRepository;
 import com.demo.repository.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,10 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Service
 public class AuthenticationService {
-
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -60,51 +63,45 @@ public class AuthenticationService {
         }
 
         repository.save(user);
-
-//        String jwt = jwtService.generateToken(user);
-
-//        saveUserToken(jwt, user);
-//        return new AuthenticationResponse(jwt, "User registration was successful");
         return new AuthenticationResponse(null, "User registration was successful");
 
     }
 
     public AuthenticationResponse authenticate(User request) {
-        Authentication auth =  authenticationManager.authenticate(
+        authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
-                        request.getPassword()));
+                        request.getPassword()
+                )
+        );
 
-//        User user = repository.findByUsername(request.getUsername()).orElseThrow();
-//        String jwt = jwtService.generateToken(user);
+        User user = repository.findByUsername(request.getUsername()).orElseThrow();
+        String jwt = jwtService.generateToken(user);
 
-//        revokeAllTokenByUser(user);
+        revokeAllTokenByUser(user);
+        saveUserToken(jwt, user);
 
-//        saveUserToken(jwt, user);
-//        return new AuthenticationResponse(jwt, "User login was successful");
+        return new AuthenticationResponse(jwt, "User login was successful");
 
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        String token = jwtService.generateToken(auth);
-        return new AuthenticationResponse(token, "User login was successful");
+    }
+    private void revokeAllTokenByUser(User user) {
+        List<Token> validTokens = tokenRepository.findAllTokensByUser(user.getId());
+        if(validTokens.isEmpty()) {
+            return;
+        }
+
+        validTokens.forEach(t-> {
+            t.setLoggedOut(true);
+        });
+
+        tokenRepository.saveAll(validTokens);
+    }
+    private void saveUserToken(String jwt, User user) {
+        Token token = new Token();
+        token.setToken(jwt);
+        token.setLoggedOut(false);
+        token.setUser(user);
+        tokenRepository.save(token);
     }
 
-//    private void revokeAllTokenByUser(User user) {
-//        List<Token> validTokens = tokenRepository.findAllTokensByUser(user.getId());
-//        if(validTokens.isEmpty()) {
-//            return;
-//        }
-//
-//        validTokens.forEach(t-> {
-//            t.setLoggedOut(true);
-//        });
-//
-//        tokenRepository.saveAll(validTokens);
-//    }
-//    private void saveUserToken(String jwt, User user) {
-//        Token token = new Token();
-//        token.setToken(jwt);
-//        token.setLoggedOut(false);
-//        token.setUser(user);
-//        tokenRepository.save(token);
-//    }
 }

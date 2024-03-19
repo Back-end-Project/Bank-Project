@@ -1,11 +1,10 @@
 package com.demo.service;
 
-import com.demo.entities.Account;
-import com.demo.entities.Transaction;
-import com.demo.entities.TransactionType;
-import com.demo.entities.User;
+import com.demo.entities.*;
 import com.demo.repository.AccountRepository;
 import com.demo.repository.TransactionRepository;
+import com.demo.repository.TransferRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,12 +19,14 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
     private final TransactionRepository transactionRepository;
+    private final TransferRepository transferRepository;
 
     @Autowired
-    public AccountService(AccountRepository accountRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
+    public AccountService(AccountRepository accountRepository, UserRepository userRepository, TransactionRepository transactionRepository, TransferRepository transferRepository) {
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
+        this.transferRepository = transferRepository;
     }
 
     /**
@@ -35,6 +36,7 @@ public class AccountService {
      * @param username - the uniq username of the user
      * @return - the newly created account
      */
+    @Transactional
     public Account createNewAccount(Account account, String username) {
         User owner = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found:("));
         account.setOwner(owner);
@@ -123,7 +125,7 @@ public class AccountService {
      *                      transaction - the amount to transfer
      * @return - the updated account
      */
-    public Account transferFunds(Long fromAccountId, Long toAccountId, Transaction transaction) throws AccessDeniedException {
+    public Account transferFunds(Long fromAccountId, Long toAccountId, Transfer transaction) throws AccessDeniedException {
         Account fromAccount = accountRepository.findById(fromAccountId).orElseThrow(() -> new RuntimeException("Account not found:("));
         Account toAccount = accountRepository.findById(toAccountId).orElseThrow(() -> new RuntimeException("Account not found:("));
         validateOwner(fromAccountId);
@@ -134,13 +136,12 @@ public class AccountService {
         }
         fromAccount.setAvailableBalance(currentBalance - amount);
         toAccount.setAvailableBalance(toAccount.getAvailableBalance() + amount);
-        transaction.setType(TransactionType.TRANSFER);
-        transactionRepository.save(transaction);
+        transferRepository.save(transaction);
 //        fromAccount.getTransactionHistory().add(transaction);
 //        toAccount.getTransactionHistory().add(transaction);
-        accountRepository.save(fromAccount);
+        Account saveAcc = accountRepository.save(fromAccount);
         accountRepository.save(toAccount);
-        return fromAccount;
+        return saveAcc;
     }
 
 

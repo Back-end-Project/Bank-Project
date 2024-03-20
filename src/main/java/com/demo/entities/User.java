@@ -76,5 +76,5 @@ public class User implements UserDetails {
      * If this is the wright approach for the accounts
      */
 //    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Account> accounts = new ArrayList<>();
+//    private List<Account> accounts;
 }

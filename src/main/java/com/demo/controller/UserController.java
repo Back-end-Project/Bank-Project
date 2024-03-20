@@ -1,4 +1,5 @@
 package com.demo.controller;
+import com.demo.dto.AccountDTO;
 import com.demo.entities.Account;
 import com.demo.service.AccountService;
 import org.hibernate.boot.model.source.spi.IdentifierSourceAggregatedComposite;
@@ -20,9 +21,9 @@ public class UserController {
     }
 
     @GetMapping("/user_account")
-    public ResponseEntity<List<Account>> userAccounts(Principal principal) {
+    public ResponseEntity<List<AccountDTO>> userAccounts(Principal principal) {
         String username = principal.getName();
-        List<Account> response = accountService.viewAllAccountsForUser(username);
+        List<AccountDTO> response = accountService.viewAllAccountsForUser(username);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

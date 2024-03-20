@@ -1,5 +1,6 @@
 package com.demo.controller;
 
+import com.demo.dto.AccountDTO;
 import com.demo.entities.Account;
 import com.demo.entities.Transaction;
 import com.demo.entities.Transfer;
@@ -39,11 +40,16 @@ public class AccountController {
     }
 
     @PutMapping("/{accountId}/deposit")
-    public ResponseEntity<Account> deposit(@PathVariable(value = "accountId") Long accountId, @RequestBody Transaction request) throws AccessDeniedException {
-        Account response = accountService.depositFunds(accountId, request);
+    public ResponseEntity<AccountDTO> deposit(@PathVariable(value = "accountId") Long accountId, @RequestBody Transaction request) {
+        AccountDTO response = accountService.depositFunds(accountId, request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PutMapping("/{accountId}/withdraw")
+    public ResponseEntity<AccountDTO> withdraw(@PathVariable(value = "accountId") Long accountId, @RequestBody Transaction request) {
+        AccountDTO response = accountService.withrawFunds(accountId, request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
     @PutMapping("/transfer/{fromAccountId}/{toAccountId}")
     public ResponseEntity<Account> transferFund(@PathVariable(value = "fromAccountId")Long fromAccountId,@PathVariable(value = "toAccountId") Long toAccountId, @RequestBody Transfer request ) throws AccessDeniedException{
         Account response = accountService.transferFunds(fromAccountId, toAccountId, request);

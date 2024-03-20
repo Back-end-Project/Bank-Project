@@ -3,6 +3,8 @@ package com.demo.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,9 @@ public class Transfer {
      * 1. If it is a Long, then we will have to query the database to get the account
      * 2. If it is an Account, we will have to pass in the whole account into the Body Request
      */
+
+//    private Long transactionId;
+
     private Long sourceAccount;
 
     private Long destinationAccount;

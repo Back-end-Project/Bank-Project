@@ -42,7 +42,6 @@ public class AccountController {
     @PutMapping("/{accountId}/deposit")
     public ResponseEntity<AccountDTO> deposit(@PathVariable(value = "accountId") Long accountId, @RequestBody Transaction request) {
         AccountDTO response = accountService.depositFunds(accountId, request);
-//        return new ResponseEntity<>("Success! $" + request.getAmount()+" have been added to your account!", HttpStatus.OK);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

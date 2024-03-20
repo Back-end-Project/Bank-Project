@@ -1,5 +1,7 @@
 package com.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -36,7 +38,8 @@ public class Account {
 //
 //    private List<Transaction> transactionHistory;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Transaction> transactionHistory;
 
     @ManyToOne(fetch = FetchType.LAZY)

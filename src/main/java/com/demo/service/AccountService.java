@@ -138,20 +138,31 @@ public class AccountService {
      *                      transaction - the amount to transfer
      * @return - the updated account
      */
-    public Account transferFunds(Long fromAccountId, Long toAccountId, Transfer transaction) throws AccessDeniedException {
+    public Account transferFunds(Long fromAccountId, Long toAccountId, Transfer transfer) throws AccessDeniedException {
+        validateOwner(fromAccountId);
         Account fromAccount = accountRepository.findById(fromAccountId).orElseThrow(() -> new RuntimeException("Account not found:("));
         Account toAccount = accountRepository.findById(toAccountId).orElseThrow(() -> new RuntimeException("Account not found:("));
-        validateOwner(fromAccountId);
         double currentBalance = fromAccount.getAvailableBalance();
-        double amount = transaction.getAmount();
+        double amount = transfer.getAmount();
         if (currentBalance < amount) {
             throw new RuntimeException("Insufficient funds");
         }
         fromAccount.setAvailableBalance(currentBalance - amount);
         toAccount.setAvailableBalance(toAccount.getAvailableBalance() + amount);
-        transferRepository.save(transaction);
-//        fromAccount.getTransactionHistory().add(transaction);
-//        toAccount.getTransactionHistory().add(transaction);
+
+        transfer.setSourceAccount(fromAccount.getId());
+        transfer.setDestinationAccount(toAccount.getId());
+        Transfer transferSaved = transferRepository.save(transfer);
+
+        Transaction newTransaction = new Transaction();
+        newTransaction.setAmount(amount);
+        newTransaction.setType(TransactionType.TRANSFER);
+        newTransaction.setAccountId(fromAccount.getId());
+        newTransaction.setTransfer(transferSaved);
+        Transaction transactionSaved = transactionRepository.save(newTransaction);
+
+        fromAccount.getTransactionHistory().add(transactionSaved);
+//        toAccount.getTransactionHistory().add(transactionSaved);
         Account saveAcc = accountRepository.save(fromAccount);
         accountRepository.save(toAccount);
         return saveAcc;

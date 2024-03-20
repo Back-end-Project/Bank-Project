@@ -39,10 +39,6 @@ public class Account {
     private List<Transaction> transactionHistory;
 
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Transaction> transactionHistory;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User owner;

@@ -1,11 +1,13 @@
 package com.demo.service;
 
+import com.demo.dto.AccountDTO;
 import com.demo.entities.Account;
 import com.demo.entities.Transaction;
 import com.demo.entities.TransactionType;
 import com.demo.entities.User;
 import com.demo.repository.AccountRepository;
 import com.demo.repository.TransactionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -62,13 +64,13 @@ public class AccountService {
      * @param username - the uniq username of the user
      * @return - a list of accounts that belong to the user
      */
-    public List<Account> viewAllAccountsForUser(String username) {
+    public List<AccountDTO> viewAllAccountsForUser(String username) {
         User owner = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found:("));
         List<Account> accounts = accountRepository.findAllByOwner(owner);
         if (accounts.isEmpty()) {
             throw new RuntimeException("No accounts found for this user");
         }
-        return accounts;
+        return accounts.stream().map(this::mapAccountToDTO).toList();
     }
 
 
@@ -79,17 +81,21 @@ public class AccountService {
      * @param transaction - the amount to deposit
      * @return - the updated account
      */
-    public Account depositFunds(Long id, Transaction transaction) throws AccessDeniedException {
-        Account account = accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account not found:("));
+    public AccountDTO depositFunds(Long id, Transaction transaction)throws AccessDeniedException {
         validateOwner(id);
+        Account account = accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account not found:("));
         double currentBalance = account.getAvailableBalance();
         double amount = transaction.getAmount();
         account.setAvailableBalance(currentBalance + amount);
+
         transaction.setType(TransactionType.DEPOSIT);
-//        transaction.getAccountID().add(account);
-        transactionRepository.save(transaction);
-//        account.getTransactionHistory().add(transaction);
-        return account;
+        transaction.setAccountId(account.getId());
+        Transaction transactionFinish = transactionRepository.save(transaction);
+
+        account.getTransactionHistory().add(transactionFinish);
+        Account updatedAccount = accountRepository.save(account);
+
+        return mapAccountToDTO(updatedAccount);
     }
 
 
@@ -100,9 +106,9 @@ public class AccountService {
      * @param transaction - the amount to withdraw
      * @return - the updated account
      */
-    public Account withrawFunds(Long id, Transaction transaction) throws AccessDeniedException {
-        Account account = accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account not found:("));
+    public AccountDTO withrawFunds(Long id, Transaction transaction) throws AccessDeniedException {
         validateOwner(id);
+        Account account = accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account not found:("));
         double currentBalance = account.getAvailableBalance();
         double amount = transaction.getAmount();
         if (currentBalance < amount) {
@@ -110,9 +116,11 @@ public class AccountService {
         }
         account.setAvailableBalance(currentBalance - amount);
         transaction.setType(TransactionType.WITHDRAWAL);
-        transactionRepository.save(transaction);
-//        account.getTransactionHistory().add(transaction);
-        return accountRepository.save(account);
+        transaction.setAccountId(account.getId());
+        Transaction transactionNew = transactionRepository.save(transaction);
+        account.getTransactionHistory().add(transactionNew);
+        Account response = accountRepository.save(account);
+        return mapAccountToDTO(response);
     }
 
     /**
@@ -208,6 +216,15 @@ public class AccountService {
         String accountNumber = account.getAccountNumber();
         String hashedAccountNumber = accountNumber.substring(0, accountNumber.length() - 4).replaceAll("[0-9]", "*") + accountNumber.substring(accountNumber.length() - 4);
         return hashedAccountNumber;
+    }
+
+    public AccountDTO mapAccountToDTO(Account account) {
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setId(account.getId());
+        accountDTO.setAccountNumber(account.getAccountNumber());
+        accountDTO.setAvailableBalance(account.getAvailableBalance());
+        accountDTO.setTransactionHistory(account.getTransactionHistory());
+        return accountDTO;
     }
 
 }

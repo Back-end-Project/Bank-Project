@@ -24,6 +24,12 @@ public class Transaction {
 
     private Double amount;
 
+    public Long accountId;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "account_id")
+//    private Long accountId;
+
     /**
      * TO BE decided:
      * If this is the right approach for the accountID

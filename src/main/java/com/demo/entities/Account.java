@@ -8,6 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,8 +33,11 @@ public class Account {
 //            joinColumns = @JoinColumn(name = "account_id"),
 //            inverseJoinColumns = @JoinColumn(name = "transaction_id")
 //    )
-
+//
 //    private List<Transaction> transactionHistory;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Transaction> transactionHistory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

@@ -1,5 +1,6 @@
 package com.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,6 +41,7 @@ public class User implements UserDetails {
     @Enumerated(value= EnumType.STRING)
     private Role role;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 

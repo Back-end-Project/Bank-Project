@@ -19,15 +19,7 @@ public class Transfer {
     private Long id;
 
     private Double amount;
-
-    /**
-     * Will have to decide if this will be a type Long or Account
-     * 1. If it is a Long, then we will have to query the database to get the account
-     * 2. If it is an Account, we will have to pass in the whole account into the Body Request
-     */
-
-//    private Long transactionId;
-
+  
     private Long sourceAccount;
 
     private Long destinationAccount;

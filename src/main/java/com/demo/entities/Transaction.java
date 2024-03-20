@@ -12,7 +12,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-import java.util.List;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "BANK_TRANSACTIONS")
@@ -31,21 +31,7 @@ public class Transaction {
     @OneToOne(fetch = FetchType.LAZY)
     public Transfer transfer;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "account_id")
-//    private Long accountId;
+    public Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-    /**
-     * TO BE decided:
-     * If this is the right approach for the accountID
-     */
-//    @ManyToMany(mappedBy = "transactionHistory", fetch = FetchType.LAZY)
-//    private List<Account> accountID;
-
-//    private List<Transfer> transferHistory;
-
-    /**
-     * TO BE ADDED:
-     * Time stamp
-     */
 }
+

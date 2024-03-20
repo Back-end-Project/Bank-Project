@@ -29,14 +29,15 @@ public class Account {
 
     private Double availableBalance;
 
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "ACCOUNT_TRANSACTION",
-//            joinColumns = @JoinColumn(name = "account_id"),
-//            inverseJoinColumns = @JoinColumn(name = "transaction_id")
-//    )
-//
-//    private List<Transaction> transactionHistory;
+
+    @ManyToMany
+    @JoinTable(
+            name = "ACCOUNT_ACTIVITY",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "transaction_id")
+    )
+    private List<Transaction> transactionHistory;
+
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToMany(fetch = FetchType.EAGER)
@@ -45,5 +46,4 @@ public class Account {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User owner;
-
 }

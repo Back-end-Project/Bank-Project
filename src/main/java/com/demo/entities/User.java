@@ -38,6 +38,12 @@ public class User implements UserDetails {
     @Column(name="password")
     private String password;
 
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "dob")
+    private String dob;
+
     @Enumerated(value= EnumType.STRING)
     private Role role;
 
@@ -69,12 +75,4 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
-
-
-    /**
-     * TO BE decided:
-     * If this is the wright approach for the accounts
-     */
-//    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Account> accounts;
 }

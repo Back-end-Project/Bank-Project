@@ -8,8 +8,6 @@ import com.demo.entities.User;
 import com.demo.repository.AccountRepository;
 import com.demo.repository.TransactionRepository;
 import com.demo.entities.*;
-import com.demo.repository.AccountRepository;
-import com.demo.repository.TransactionRepository;
 import com.demo.repository.TransferRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +58,7 @@ public class AccountService {
             account.setAccountNumber(accountNumber);
         }
 
-//        account.setTransactionHistory(null);
+        account.setTransactionHistory(null);
 
         return accountRepository.save(account);
     }
@@ -162,7 +160,9 @@ public class AccountService {
         Transaction transactionSaved = transactionRepository.save(newTransaction);
 
         fromAccount.getTransactionHistory().add(transactionSaved);
-//        toAccount.getTransactionHistory().add(transactionSaved);
+        toAccount.getTransactionHistory().add(transactionSaved);
+        fromAccount.getTransactionHistory().add(transactionSaved);
+
         Account saveAcc = accountRepository.save(fromAccount);
         accountRepository.save(toAccount);
         return saveAcc;

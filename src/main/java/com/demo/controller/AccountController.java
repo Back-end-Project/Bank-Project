@@ -2,6 +2,7 @@ package com.demo.controller;
 
 import com.demo.entities.Account;
 import com.demo.entities.Transaction;
+import com.demo.entities.Transfer;
 import com.demo.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,12 @@ public class AccountController {
     @PutMapping("/{accountId}/deposit")
     public ResponseEntity<Account> deposit(@PathVariable(value = "accountId") Long accountId, @RequestBody Transaction request) throws AccessDeniedException {
         Account response = accountService.depositFunds(accountId, request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/transfer/{fromAccountId}/{toAccountId}")
+    public ResponseEntity<Account> transferFund(@PathVariable(value = "fromAccountId")Long fromAccountId,@PathVariable(value = "toAccountId") Long toAccountId, @RequestBody Transfer request ) throws AccessDeniedException{
+        Account response = accountService.transferFunds(fromAccountId, toAccountId, request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

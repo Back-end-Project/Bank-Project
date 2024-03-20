@@ -31,7 +31,13 @@ public class JwtService {
 
     public boolean isValid(String token, UserDetails user) {
         String username = extractUsername(token);
-        return (username.equals(user.getUsername())) && !isTokenExpired(token);
+
+        boolean validToken = tokenRepository
+                .findByToken(token)
+                .map(t -> !t.isLoggedOut())
+                .orElse(false);
+
+        return (username.equals(user.getUsername())) && !isTokenExpired(token) && validToken;
     }
 
     private boolean isTokenExpired(String token) {
@@ -57,27 +63,12 @@ public class JwtService {
     }
 
 
-//    public String generateToken(User user) {
-//        String token = Jwts
-//                .builder()
-//                .subject(user.getUsername())
-//                .issuedAt(new Date(System.currentTimeMillis()))
-//                .expiration(new Date(System.currentTimeMillis() + 24*60*60*1000 ))
-//                .signWith(getSigninKey())
-//                .compact();
-//
-//        return token;
-//    }
-
-    public String generateToken(Authentication auth){
-        String username = auth.getName();
-        Date currentDate = new Date();
-        Date expiryDate = new Date(currentDate.getTime() + 24*60*60*1000);
-
-        String token = Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(expiryDate)
+    public String generateToken(User user) {
+        String token = Jwts
+                .builder()
+                .subject(user.getUsername())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + 24*60*60*1000 ))
                 .signWith(getSigninKey())
                 .compact();
 

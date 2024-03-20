@@ -42,7 +42,7 @@ public class AccountService {
      * @return - the newly created account
      */
     @Transactional
-    public Account createNewAccount(Account account, String username) {
+    public AccountDTO createNewAccount(Account account, String username) {
         User owner = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found:("));
         account.setOwner(owner);
 
@@ -60,7 +60,8 @@ public class AccountService {
 
         account.setTransactionHistory(null);
 
-        return accountRepository.save(account);
+        Account response = accountRepository.save(account);
+        return mapAccountToDTO(response);
     }
 
 
@@ -137,7 +138,7 @@ public class AccountService {
      *                      transaction - the amount to transfer
      * @return - the updated account
      */
-    public Account transferFunds(Long fromAccountId, Long toAccountId, Transfer transfer) throws AccessDeniedException {
+    public AccountDTO transferFunds(Long fromAccountId, Long toAccountId, Transfer transfer) throws AccessDeniedException {
         validateOwner(fromAccountId);
         Account fromAccount = accountRepository.findById(fromAccountId).orElseThrow(() -> new RuntimeException("Account not found:("));
         Account toAccount = accountRepository.findById(toAccountId).orElseThrow(() -> new RuntimeException("Account not found:("));
@@ -165,7 +166,7 @@ public class AccountService {
 
         Account saveAcc = accountRepository.save(fromAccount);
         accountRepository.save(toAccount);
-        return saveAcc;
+        return mapAccountToDTO(saveAcc);
     }
 
 

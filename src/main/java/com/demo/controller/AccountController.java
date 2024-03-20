@@ -9,9 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
-import com.demo.service.AccountService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
@@ -27,9 +24,9 @@ public class AccountController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Account> createAccount(@RequestBody Account request, Principal principal){
+    public ResponseEntity<AccountDTO> createAccount(@RequestBody Account request, Principal principal){
         String username = principal.getName();
-        Account response = accountService.createNewAccount(request, username);
+        AccountDTO response = accountService.createNewAccount(request, username);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -45,8 +42,8 @@ public class AccountController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @PutMapping("/transfer/{fromAccountId}/{toAccountId}")
-    public ResponseEntity<Account> transferFund(@PathVariable(value = "fromAccountId")Long fromAccountId,@PathVariable(value = "toAccountId") Long toAccountId, @RequestBody Transfer request ) throws AccessDeniedException{
-        Account response = accountService.transferFunds(fromAccountId, toAccountId, request);
+    public ResponseEntity<AccountDTO> transferFund(@PathVariable(value = "fromAccountId")Long fromAccountId,@PathVariable(value = "toAccountId") Long toAccountId, @RequestBody Transfer request ) throws AccessDeniedException{
+        AccountDTO response = accountService.transferFunds(fromAccountId, toAccountId, request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

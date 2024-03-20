@@ -66,6 +66,7 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
+
     /**
      * Based on whoever is registered, the user will see only his accounts
      *
@@ -217,6 +218,10 @@ public class AccountService {
         return builder.toString();
     }
 
+    public void deleteAccount(Long id) {
+        Account account = accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account not found:("));
+        accountRepository.delete(account);
+    }
 
     /**
      * Helper method to get/set the Account balance

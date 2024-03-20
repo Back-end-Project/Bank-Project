@@ -6,7 +6,9 @@ import org.hibernate.boot.model.source.spi.IdentifierSourceAggregatedComposite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -39,5 +41,10 @@ public class UserController {
     public ResponseEntity<List<Account>> adminOnly() {
         List<Account> response = accountService.adminView();
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @DeleteMapping("/admin_only/delete/{accountId}")
+    public ResponseEntity<String> deleteAccount(@PathVariable(value = "accountId") Long accountId){
+        accountService.deleteAccount(accountId);
+        return new ResponseEntity<>("Account deleted successfully!",HttpStatus.OK);
     }
 }

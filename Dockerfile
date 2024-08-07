@@ -1,4 +1,4 @@
-#Base Image: Uses the official Gradle image with Gradle 8.7 and JDK 17.
+#Base Image: Uses the official Gradle image with Gradle 8.5 and JDK 17.
 #Alias: Names this stage build for use in multi-stage builds.
 FROM gradle:8.5-jdk17 AS build
 

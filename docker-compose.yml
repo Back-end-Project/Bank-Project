@@ -1,0 +1,35 @@
+services:
+  postgres_container:
+    image: postgres:16
+    container_name: postgres_container
+    environment:
+      POSTGRES_DB: bank-app-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - custom_bridge_network
+
+  app:
+    build: .
+    container_name: bank-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres_container
+    environment:
+      DB_URL: jdbc:postgresql://postgres_container:5432/bank-app-db
+      DB_USERNAME: postgres
+      DB_PASSWORD: Postgres
+    networks:
+      - custom_bridge_network
+
+volumes:
+  postgres-data:
+networks:
+  custom_bridge_network:
+    name: "custom_bridge_network"
+    driver: bridge

@@ -1,5 +1,5 @@
 #Base Image: Uses the official Gradle image with Gradle 8.5 and JDK 17.
-#Alias: Names this stage build for use in multi-stage builds.
+#BUILDs the image
 FROM gradle:8.5-jdk17 AS build
 
 #Working Directory: Sets the working directory inside the container to /app.
@@ -16,7 +16,7 @@ COPY src ./src
 RUN gradle bootJar
 
 #Base Image: Uses the official OpenJDK 17 image for the runtime environment.
-#Alias: Names this stage runtime.
+#RUNs the image
 FROM openjdk:17 AS runtime
 
 #Working Directory: Sets the working directory inside the container to /app.

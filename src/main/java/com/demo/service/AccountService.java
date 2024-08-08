@@ -236,8 +236,7 @@ public class AccountService {
      */
     public String HashMethod(Account account) {
         String accountNumber = account.getAccountNumber();
-        String hashedAccountNumber = accountNumber.substring(0, accountNumber.length() - 4).replaceAll("[0-9]", "*") + accountNumber.substring(accountNumber.length() - 4);
-        return hashedAccountNumber;
+        return accountNumber.substring(0, accountNumber.length() - 4).replaceAll("[0-9]", "*") + accountNumber.substring(accountNumber.length() - 4);
     }
 
     public AccountDTO mapAccountToDTO(Account account) {

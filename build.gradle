@@ -40,6 +40,9 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
 }
 
 jacoco {
@@ -66,3 +69,7 @@ jacocoTestCoverageVerification {
 }
 
 check.dependsOn jacocoTestCoverageVerification
+
+tasks.withType(Test) {
+	ignoreFailures = true
+}

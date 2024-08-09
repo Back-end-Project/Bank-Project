@@ -13,6 +13,7 @@ services:
         value: bank_app
       - key: DB_PASSWORD
         value: Gx1ylg3yU1nFLs8OkjEnqjnAIMdvaZH7
+
   - type: database
     name: bank-app-db
     plan: starter

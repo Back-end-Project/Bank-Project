@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: bank-app
+    env: docker
+    plan: starter
+    image: hpulido747/bank-app:latest
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: DB_URL
+        value: jdbc:postgresql://bank-app-db:5432/bank-app-db
+      - key: DB_USERNAME
+        value: postgres
+      - key: DB_PASSWORD
+        value: Postgres
+
+  - type: database
+    name: bank-app-db
+    plan: starter
+    databaseName: bank-app-db
+    user: postgres
+    password: Postgres

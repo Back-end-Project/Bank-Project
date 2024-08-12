@@ -32,9 +32,9 @@ class UserServiceTest {
         MockitoAnnotations.openMocks(this);
         user = new User();
         user.setId(1L);
-        user.setFirstName("John");
-        user.setLastName("Doe");
-        user.setUsername("johndoe");
+        user.setFirstName("Hector");
+        user.setLastName("Dof");
+        user.setUsername("HectorDof");
         user.setEmail("johndoe@example.com");
     }
 
@@ -87,7 +87,7 @@ class UserServiceTest {
     public void testFetchByUsername() {
         when(userRepository.findByUsername(anyString())).thenReturn(Optional.of(user));
 
-        Optional<User> foundUser = userRepository.findByUsername("johndoe");
+        Optional<User> foundUser = userRepository.findByUsername("HectorDof");
 
         assertTrue(foundUser.isPresent());
         assertEquals(user.getUsername(), foundUser.get().getUsername());

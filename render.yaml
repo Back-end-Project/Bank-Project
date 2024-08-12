@@ -8,7 +8,7 @@ services:
     autoDeploy: true
     envVars:
       - key: DB_URL
-        value: jdbc:postgresql://bank_app:Gx1ylg3yU1nFLs8OkjEnqjnAIMdvaZH7@dpg-cqr8aq3v2p9s73bfnr90-a:5432/bank_app_db_u7na
+        value: jdbc:postgresql://dpg-cqr8aq3v2p9s73bfnr90-a:5432/bank_app_db_u7na
       - key: DB_USERNAME
         value: bank_app
       - key: DB_PASSWORD

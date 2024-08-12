@@ -4,7 +4,8 @@ services:
     name: bank-app
     env: docker
     runtime: docker
-    image: hpulido747/bank-app:latest
+    image:
+      url: docker.io/hpulido747/bank-app:latest
     healthCheckPath: /
     autoDeploy: true
     envVars:
@@ -20,4 +21,3 @@ databases:
     plan: free
     databaseName: bank_app_db_u7na
     user: bank_app
-    password: Gx1ylg3yU1nFLs8OkjEnqjnAIMdvaZH7

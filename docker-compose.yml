@@ -1,36 +1,33 @@
+version: '3.8'
+
 services:
-  postgres_container:
-    image: postgres:16
-    container_name: postgres_container
-    environment:
-      DB_URL: jdbc:postgresql://dpg-cqr8aq3v2p9s73bfnr90-a/bank_app_db_u7na
-      DB_USERNAME: bank_app
-      DB_PASSWORD: Gx1ylg3yU1nFLs8OkjEnqjnAIMdvaZH7
-    ports:
-      - "5433:5432"
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    networks:
-      - custom_bridge_network
+#  postgres_container:
+#    image: postgres:16
+#    container_name: postgres_container
+#    environment:
+#      POSTGRES_DB: bank_app_db_u7na
+#      POSTGRES_USER: bank_app
+#      POSTGRES_PASSWORD: Gx1ylg3yU1nFLs8OkjEnqjnAIMdvaZH7
+#    ports:
+#      - "5433:5432"
+#    volumes:
+#      - postgres-data:/var/lib/postgresql/data
+#    networks:
+#      - custom_bridge_network
 
   app:
     image: hpulido747/bank-app:latest
-    build: .
     container_name: bank-app
     ports:
       - "8080:8080"
-    depends_on:
-      - postgres_container
     environment:
-      DB_URL: jdbc:postgresql://dpg-cqr8aq3v2p9s73bfnr90-a/bank_app_db_u7na
+      DB_URL: jdbc:postgresql://dpg-cqr8aq3v2p9s73bfnr90-a.oregon-postgres.render.com:5432/bank_app_db_u7na
       DB_USERNAME: bank_app
       DB_PASSWORD: Gx1ylg3yU1nFLs8OkjEnqjnAIMdvaZH7
     networks:
       - custom_bridge_network
-
-volumes:
-  postgres-data:
+#volumes:
+#  postgres-data:
 networks:
   custom_bridge_network:
-    name: "custom_bridge_network"
     driver: bridge

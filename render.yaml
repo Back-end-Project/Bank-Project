@@ -1,8 +1,9 @@
 services:
   - type: web
+    plan: free
     name: bank-app
     env: docker
-    plan: free
+    runtime: docker
     image: hpulido747/bank-app:latest
     healthCheckPath: /
     autoDeploy: true
@@ -14,8 +15,8 @@ services:
       - key: DB_PASSWORD
         value: Gx1ylg3yU1nFLs8OkjEnqjnAIMdvaZH7
 
-  - type: database
-    name: bank-app-db
+databases:
+  - name: bank-app-db
     plan: free
     databaseName: bank_app_db_u7na
     user: bank_app

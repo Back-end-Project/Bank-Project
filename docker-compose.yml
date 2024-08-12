@@ -22,9 +22,9 @@ services:
     depends_on:
       - postgres_container
     environment:
-      DB_URL: jdbc:postgresql://postgres_container:5432/bank-app-db
-      DB_USERNAME: postgres
-      DB_PASSWORD: Postgres
+      DB_URL: jdbc:postgresql://dpg-cqr8aq3v2p9s73bfnr90-a/bank_app_db_u7na
+      DB_USERNAME: bank_app
+      DB_PASSWORD: Gx1ylg3yU1nFLs8OkjEnqjnAIMdvaZH7
     networks:
       - custom_bridge_network
 

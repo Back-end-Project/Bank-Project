@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.demo.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -91,6 +92,11 @@ public class AccountService {
     public AccountDTO depositFunds(Long id, Transaction transaction)throws AccessDeniedException {
         validateOwner(id);
         Account account = accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account not found:("));
+
+        if (account.getTransactionHistory() == null) {
+            account.setTransactionHistory(new ArrayList<>());
+        }
+
         double currentBalance = account.getAvailableBalance();
         double amount = transaction.getAmount();
         account.setAvailableBalance(currentBalance + amount);
